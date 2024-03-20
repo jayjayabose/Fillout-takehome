@@ -1,0 +1,48 @@
+### MY SERVER
+
+### MIRROR
+### 1a. valid, no params: O: 200 OK / body: json
+GET http://localhost:3000/v1/api/forms/cLZojxk94ous/filteredResponses
+
+### 1b. valid, + params: O: 200 OK / body: json
+GET http://localhost:3000/v1/api/forms/cLZojxk94ous/filteredResponses?limit=2
+
+### 2a. invValid, bad form id O: 404 Bad Request / body: json
+GET http://localhost:3000/v1/api/forms/XXX/filteredResponses
+
+### 2b. invalid, bad params: 400 Bad Request / body: json
+GET http://localhost:3000/v1/api/forms/cLZojxk94ous/filteredResponses?limit=XXX
+
+### 2c. invValid, bad bad path: : 404 Not Found  / body html
+GET http://localhost:3000/v1/api/formsXX/cLZojxk94ous
+
+
+
+
+### FILL OUT API
+```
+
+### 1a. valid, no params: cLZojxk94ous
+GET https://api.fillout.com/v1/api/forms/cLZojxk94ous/submissions
+Authorization: Bearer sk_prod_TfMbARhdgues5AuIosvvdAC9WsA5kXiZlW8HZPaRDlIbCpSpLsXBeZO7dCVZQwHAY3P4VSBPiiC33poZ1tdUj2ljOzdTCCOSpUZ_3912
+
+### 1b. valid, params: cLZojxk94ous
+GET https://api.fillout.com/v1/api/forms/cLZojxk94ous/submissions?limit=2
+Authorization: Bearer sk_prod_TfMbARhdgues5AuIosvvdAC9WsA5kXiZlW8HZPaRDlIbCpSpLsXBeZO7dCVZQwHAY3P4VSBPiiC33poZ1tdUj2ljOzdTCCOSpUZ_3912
+
+### 2a. invValid, bad form id O: 400 Bad Request / body: json
+GET https://api.fillout.com/v1/api/forms/XXX/submissions
+Authorization: Bearer sk_prod_TfMbARhdgues5AuIosvvdAC9WsA5kXiZlW8HZPaRDlIbCpSpLsXBeZO7dCVZQwHAY3P4VSBPiiC33poZ1tdUj2ljOzdTCCOSpUZ_3912
+
+### 2b. invalid, bad params: 400 Bad Request / body: json
+GET https://api.fillout.com/v1/api/forms/cLZojxk94ous/submissions?limit=XXX
+Authorization: Bearer sk_prod_TfMbARhdgues5AuIosvvdAC9WsA5kXiZlW8HZPaRDlIbCpSpLsXBeZO7dCVZQwHAY3P4VSBPiiC33poZ1tdUj2ljOzdTCCOSpUZ_3912
+
+### 2c. invValid, bad bad path: : 404 Not Found  / body html
+GET https://api.fillout.com/v1/api/formsXX/cLZojxk94ous
+Authorization: Bearer sk_prod_TfMbARhdgues5AuIosvvdAC9WsA5kXiZlW8HZPaRDlIbCpSpLsXBeZO7dCVZQwHAY3P4VSBPiiC33poZ1tdUj2ljOzdTCCOSpUZ_3912
+
+## not applicable to my server
+### 2c. invValid, bad API key O: 404 Bad Request / body:json
+GET https://api.fillout.com/v1/api/forms/cLZojxk94ous/submissions
+Authorization: Bearer XX
