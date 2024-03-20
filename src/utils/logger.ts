@@ -3,6 +3,6 @@ const info = (...params: any[]) => {
 }
 
 const error = (...params: any[]) => {
-  console.error(...params)
+  console.error('Error', ...params)
 }
 export default { info, error };
