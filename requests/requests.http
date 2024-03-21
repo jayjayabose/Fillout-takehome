@@ -4,10 +4,10 @@
 ### 1a. valid, no params: O: 200 OK / body: json
 GET http://localhost:3000/v1/api/forms/cLZojxk94ous/filteredResponses
 
-### 1b. valid, + params: O: 200 OK / body: json
+### 1b. valid, + limit =2: O: 200 OK / body: json
 GET http://localhost:3000/v1/api/forms/cLZojxk94ous/filteredResponses?limit=2
 
-### 2a. invValid, bad form id O: 404 Bad Request / body: json
+### 2a. invValid, bad form id O: 400 Bad Request / body: json
 GET http://localhost:3000/v1/api/forms/XXX/filteredResponses
 
 ### 2b. invalid, bad params: 400 Bad Request / body: json
@@ -18,9 +18,12 @@ GET http://localhost:3000/v1/api/formsXX/cLZojxk94ous
 
 
 ### FILTER
-### 1a. valid, with filters: O: 200 OK / body: json -- apply filter
-GET http://localhost:3000/v1/api/forms/cLZojxk94ous/filteredResponses?filters=[{"id":"nameId","condition":"equals","value":"Johnny"}]
+### 1a. valid, with filters: name equals "Johnny": O: 200 OK / body: json -- apply filter
+GET http://localhost:3000/v1/api/forms/cLZojxk94ous/filteredResponses?filters=[{"id":"bE2Bo4cGUv49cjnqZ4UnkW","condition":"greater_than","value":"Johnny"}]
 
+### 1b. valid, with filters: emplolyees O: 200 OK / body: json -- apply filter
+// 
+GET http://localhost:3000/v1/api/forms/cLZojxk94ous/filteredResponses?filters=[{"id":"fFnyxwWa3KV6nBdfBDCHEA","condition":"equals","value":"0"}]
 
 ### 2a. invValid, with filters:  bad form id O: 404 Bad Request / body: json  -- do not apply filter
 GET http://localhost:3000/v1/api/forms/XXX/filteredResponses?filters=[{"id":"nameId","condition":"equals","value":"Timmy"}]

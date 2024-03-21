@@ -8,6 +8,8 @@ type FilterClauseType = {
 
 type ApiResponseDataType = {
 	responses: any[];
+	totalResponses: number;
+	pageCount: number;
 }
 
 export { ResponseFiltersType, FilterClauseType, ApiResponseDataType };
