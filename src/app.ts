@@ -1,41 +1,58 @@
 import express, { Application, Request, Response } from 'express';
 import logger from './utils/logger';
 import axios from 'axios';
+import {getFilteredData} from './services/filters';
+import { log } from 'console';
 
 const BASE_URL = process.env.BASE_URL || null;
 const RESOURCE_PATH = process.env.RESOURCE_PATH || null;
 const API_KEY = process.env.API_KEY || null;
 
-let urlAndPath: string;
+let apiUrlAndPath: string;
 
 if (BASE_URL && RESOURCE_PATH) {
-  urlAndPath = BASE_URL + RESOURCE_PATH;
-  logger.info('urlAndPath:', urlAndPath);
+  apiUrlAndPath = BASE_URL + RESOURCE_PATH;
+  logger.info('apiUrlAndPath:', apiUrlAndPath);
 } else {
   logger.error('One or envioronment variables are null. Check your .env file.');
 }
 
 const app: Application = express();
 
+
 app.get(
   '/v1/api/forms/:formId/filteredResponses',
   async (req: Request, res: Response) => {
     logger.info('route hit', req.query);
     try {
-      const url = `${urlAndPath}/${req.params.formId}/submissions`;
+      let requestedLimit = req.query.limit;
+      delete req.query.limit;
 
-      const response = await axios.get(url, {
+      logger.info('req.query', req.query, `requestedLimit`, requestedLimit );
+      const apiSubmissionsEndPoint = `${apiUrlAndPath}/${req.params.formId}/submissions`;
+      
+      const apiResponse = await axios.get(apiSubmissionsEndPoint, {
         headers: { Authorization: `Bearer ${API_KEY}` },
         params: req.query,
         validateStatus: function (status) {
-          // relay api response of any status code
+          // relay api apiResponse witn any status code
           return true;
         },
       });
 
-      const data = await response.data;
-      res.status(response.status).send(response.data);
+      const filtersParam = req.query.filters;
+      let data = await apiResponse.data;
+      // logger.info('data:', data, typeof data);
+
+      if (filtersParam && apiResponse.status === 200) {
+        const filters = JSON.parse(filtersParam as string); // note: yes we do need to parse filter params
+        data = getFilteredData(data, filters);
+        logger.info('getFilteredData:', filters, data.responses.length);
+        //data = getResponsesPageCount(data, limit) // note: implment this function
+      }
+      res.status(apiResponse.status).send(data);
     } catch (error) {
+      logger.error('error:', error);
       // res.status(400).json({message: 'Invalid formId'});
     }
   }
