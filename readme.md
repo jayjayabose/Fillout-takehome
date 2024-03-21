@@ -1,6 +1,16 @@
-# template
-- node, express, ts + jest
-- resources
- - [reference: ts + express api project](https://dev.to/wizdomtek/typescript-express-building-robust-apis-with-nodejs-1fln)
- - [reference: jest testing with express + ts](https://dev.to/nathan_sheryak/how-to-test-a-typescript-express-api-with-jest-for-dummies-like-me-4epd)
-  - github: https://github.com/N8ers/ts-express-jest-supertest
+# Filter Notes
+- filterClause with `type: number`
+  - no special handling for the case question `value` is an `null`, filterClause will not match
+  
+- filterClause with `type: string`
+  - no special handling for the case filterCause `value` is an emppty string (``), filterClause will not match
+  - no special handling for the case question `value` is an `null`, filterClause will not match
+  - `condition: greater_than` or `condtion: less_than` 
+    - The filter compares strings semantically 
+    - Alternatively we could choose to treat this as an invalid filter and return an error
+
+
+
+
+- api response data is type `any`
+- null values and greater than less than

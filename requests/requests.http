@@ -19,7 +19,7 @@ GET http://localhost:3000/v1/api/formsXX/cLZojxk94ous
 
 ### FILTER
 ### 1a. valid, with filters: O: 200 OK / body: json -- apply filter
-GET http://localhost:3000/v1/api/forms/cLZojxk94ous/filteredResponses?filters=[{"id":"nameId","condition":"equals","value":"Timmy"}]
+GET http://localhost:3000/v1/api/forms/cLZojxk94ous/filteredResponses?filters=[{"id":"nameId","condition":"equals","value":"Johnny"}]
 
 
 ### 2a. invValid, with filters:  bad form id O: 404 Bad Request / body: json  -- do not apply filter
