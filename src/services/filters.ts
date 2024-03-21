@@ -1,40 +1,4 @@
-import { log } from 'console';
 import { ResponseFiltersType, FilterClauseType, ApiResponseDataType } from '../types/types';
-
-import logger from '../utils/logger';
-
-// type the data?
-/*
-FILTER
-I: responseFilters: FilterClauseType[], responses: { submissionId, ... questions: {id, name, type, value}, ...}[] }[]
-O: filtered responses: responseObjects[] // subet
-Rules
- - multiple clauses applied as 'AND'
- - update totalResponses and pageCount if needed
-
-
-{
- sumbissionId:
- questions: [
-   id:
-    type:
-    nhame: 
-    value; 
-  ]
-
-}
-
-Approach:
- - interrogate all submissions
- - filter for submissions where each filter clause returns truen
- -(update pagination)
-
-Algo: filter
- LOOP: all submiision objects
-    return filterCauses.every 
-        clause matches a question
-
-*/
 
 // Apply all fiter clauses to the data returned from the API
 function getFilteredData(data: ApiResponseDataType, filters: ResponseFiltersType): ApiResponseDataType {
@@ -57,7 +21,7 @@ function filterMatchesResponse(
     return question.id === filter.id;
   });
 
-  // no match if question not found
+  // clause does not match if question is not found
   if (!question) {
     return false;
   }
@@ -83,8 +47,17 @@ function filterMatchesResponse(
   }
 }
 
-function getResponsesPageCount<T>(data: T, limit: number): T {
+function getTotalResponsesAndPageCount(data: ApiResponseDataType, limit: number | null): ApiResponseDataType {
+  const totalResponses = data.responses.length;
+  const pageCount = limit ? Math.ceil(totalResponses / limit) : 1;
+  return { ...data, totalResponses, pageCount };
+}
+
+function getLimitedData(data: ApiResponseDataType, limit: number | null): ApiResponseDataType {
+  if (limit) {
+    return { ...data, responses: data.responses.slice(0, limit) };
+  }
   return data;
 }
 
-export { getFilteredData, getResponsesPageCount, filterMatchesResponse};
+export {getFilteredData,  filterMatchesResponse, getTotalResponsesAndPageCount, getLimitedData};
