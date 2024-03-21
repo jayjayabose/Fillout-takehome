@@ -1,0 +1,85 @@
+### /filteredResponses
+
+### MIRROR
+### 1a. valid, no params: O: 200 OK / body: json
+  # "totalResponses": 14,
+  # "pageCount": 1
+GET http://localhost:3000/v1/api/forms/cLZojxk94ous/filteredResponses
+
+
+### 1b. valid, + limit =2: O: 200 OK / body: json
+  # "totalResponses": 14,
+  # "pageCount": 7
+GET http://localhost:3000/v1/api/forms/cLZojxk94ous/filteredResponses?limit=2
+
+
+### 2a. invValid, bad form id 
+  # O: 400 Bad Request / body: json
+GET http://localhost:3000/v1/api/forms/XXX/filteredResponses
+
+### 2b. invalid, bad params: 
+  # O: 400 Bad Request / body: json
+GET http://localhost:3000/v1/api/forms/cLZojxk94ous/filteredResponses?limit=XXX
+
+### 2c. invValid, bad bad path: 
+  # O: 404 Not Found  / body html
+GET http://localhost:3000/v1/api/formsXX/cLZojxk94ous
+
+
+### FILTER
+### 1a. valid, filters: name equals "Johnny": O: 200 OK / body: json
+  # "totalResponses": 1,
+  # "pageCount": 1
+GET http://localhost:3000/v1/api/forms/cLZojxk94ous/filteredResponses?filters=[{"id":"bE2Bo4cGUv49cjnqZ4UnkW","condition":"equals","value":"Johnny"}]
+
+
+### 1b. valid, filters: employees greater than O: 200 OK / body: json 
+  # "totalResponses": 9,
+  # "pageCount": 1
+GET http://localhost:3000/v1/api/forms/cLZojxk94ous/filteredResponses?filters=[{"id":"fFnyxwWa3KV6nBdfBDCHEA","condition":"greater_than","value":0}]
+
+
+### 1c. valid, filters: employees greater than O + limit=4: 200 OK / body: json 
+  # "totalResponses": 9,
+  # "pageCount": 3
+GET http://localhost:3000/v1/api/forms/cLZojxk94ous/filteredResponses?limit=4&filters=[{"id":"fFnyxwWa3KV6nBdfBDCHEA","condition":"greater_than","value":0}]
+
+
+### 1d. valid, filters: employees greater than O and name does_not_equal "Johnny" + limit=4: 200 OK / body: json 
+  # "totalResponses": 8,
+  # "pageCount": 2
+GET http://localhost:3000/v1/api/forms/cLZojxk94ous/filteredResponses?limit=4&filters=[{"id":"fFnyxwWa3KV6nBdfBDCHEA","condition":"greater_than","value":0}, {"id":"bE2Bo4cGUv49cjnqZ4UnkW","condition":"does_not_equal","value":"Johnny"}]
+
+
+### 2a. invValid, with filters:  bad form id O: 404 Bad Request / body: json  
+  # O: 400 Bad Request / body: json
+GET http://localhost:3000/v1/api/forms/XXX/filteredResponses?filters=[{"id":"nameId","condition":"equals","value":"Timmy"}]
+
+
+### /responses
+```
+
+### 1a. valid, no params: cLZojxk94ous
+GET https://api.fillout.com/v1/api/forms/cLZojxk94ous/submissions
+Authorization: Bearer sk_prod_TfMbARhdgues5AuIosvvdAC9WsA5kXiZlW8HZPaRDlIbCpSpLsXBeZO7dCVZQwHAY3P4VSBPiiC33poZ1tdUj2ljOzdTCCOSpUZ_3912
+
+### 1b. valid, params: cLZojxk94ous
+GET https://api.fillout.com/v1/api/forms/cLZojxk94ous/submissions?limit=2
+Authorization: Bearer sk_prod_TfMbARhdgues5AuIosvvdAC9WsA5kXiZlW8HZPaRDlIbCpSpLsXBeZO7dCVZQwHAY3P4VSBPiiC33poZ1tdUj2ljOzdTCCOSpUZ_3912
+
+### 2a. invValid, bad form id O: 400 Bad Request / body: json
+GET https://api.fillout.com/v1/api/forms/XXX/submissions
+Authorization: Bearer sk_prod_TfMbARhdgues5AuIosvvdAC9WsA5kXiZlW8HZPaRDlIbCpSpLsXBeZO7dCVZQwHAY3P4VSBPiiC33poZ1tdUj2ljOzdTCCOSpUZ_3912
+
+### 2b. invalid, bad params: 400 Bad Request / body: json
+GET https://api.fillout.com/v1/api/forms/cLZojxk94ous/submissions?limit=XXX
+Authorization: Bearer sk_prod_TfMbARhdgues5AuIosvvdAC9WsA5kXiZlW8HZPaRDlIbCpSpLsXBeZO7dCVZQwHAY3P4VSBPiiC33poZ1tdUj2ljOzdTCCOSpUZ_3912
+
+### 2c. invValid, bad bad path: : 404 Not Found  / body html
+GET https://api.fillout.com/v1/api/formsXX/cLZojxk94ous
+Authorization: Bearer sk_prod_TfMbARhdgues5AuIosvvdAC9WsA5kXiZlW8HZPaRDlIbCpSpLsXBeZO7dCVZQwHAY3P4VSBPiiC33poZ1tdUj2ljOzdTCCOSpUZ_3912
+
+## not applicable to my server
+### 2c. invValid, bad API key O: 404 Bad Request / body:json
+GET https://api.fillout.com/v1/api/forms/cLZojxk94ous/submissions
+Authorization: Bearer XX
