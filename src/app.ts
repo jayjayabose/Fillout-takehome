@@ -2,6 +2,7 @@ import express, { Application, Request, Response } from 'express';
 import logger from './utils/logger';
 import axios from 'axios';
 import {getFilteredData} from './services/filters';
+import { log } from 'console';
 
 const BASE_URL = process.env.BASE_URL || null;
 const RESOURCE_PATH = process.env.RESOURCE_PATH || null;
@@ -24,6 +25,10 @@ app.get(
   async (req: Request, res: Response) => {
     logger.info('route hit', req.query);
     try {
+      let requestedLimit = req.query.limit;
+      delete req.query.limit;
+
+      logger.info('req.query', req.query, `requestedLimit`, requestedLimit );
       const apiSubmissionsEndPoint = `${apiUrlAndPath}/${req.params.formId}/submissions`;
       
       const apiResponse = await axios.get(apiSubmissionsEndPoint, {
@@ -42,8 +47,10 @@ app.get(
       if (filtersParam && apiResponse.status === 200) {
         const filters = JSON.parse(filtersParam as string); // note: yes we do need to parse filter params
         data = getFilteredData(data, filters);
+        logger.info('getFilteredData:', filters, data.responses.length);
+        //data = getResponsesPageCount(data, limit) // note: implment this function
       }
-      res.status(apiResponse.status).send(apiResponse.data);
+      res.status(apiResponse.status).send(data);
     } catch (error) {
       logger.error('error:', error);
       // res.status(400).json({message: 'Invalid formId'});

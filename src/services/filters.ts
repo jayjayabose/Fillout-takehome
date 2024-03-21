@@ -1,5 +1,5 @@
 import { log } from 'console';
-import { ResponseFiltersType, FilterClauseType } from '../types/types';
+import { ResponseFiltersType, FilterClauseType, ApiResponseDataType } from '../types/types';
 
 import logger from '../utils/logger';
 
@@ -37,7 +37,7 @@ Algo: filter
 */
 
 // Apply all fiter clauses to the data returned from the API
-function getFilteredData(data: any, filters: ResponseFiltersType): any {
+function getFilteredData(data: ApiResponseDataType, filters: ResponseFiltersType): ApiResponseDataType {
   // loop through submissions/responses
   const filteredResponses = data.responses.filter((response: any) => {
     // filter for submissions where each filter clause returns true
@@ -83,4 +83,8 @@ function filterMatchesResponse(
   }
 }
 
-export { getFilteredData, filterMatchesResponse };
+function getResponsesPageCount<T>(data: T, limit: number): T {
+  return data;
+}
+
+export { getFilteredData, getResponsesPageCount, filterMatchesResponse};

@@ -6,4 +6,8 @@ type FilterClauseType = {
 	value: number | string;
 }
 
-export { ResponseFiltersType, FilterClauseType }
+type ApiResponseDataType = {
+	responses: any[];
+}
+
+export { ResponseFiltersType, FilterClauseType, ApiResponseDataType };
