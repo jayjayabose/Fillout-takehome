@@ -4,6 +4,7 @@ import axios from 'axios';
 import logger from '../utils/logger';
 import {getFilteredData, getTotalResponsesAndPageCount, getLimitedData} from '../services/filters';
 import { apiUrlAndPath, API_KEY } from '../utils/config';
+import { ISubmissionsResponse } from '../types/types';
 
 const apiRouter = express.Router();
 
@@ -30,7 +31,8 @@ apiRouter.get(
         },
       });
 
-      let data = await apiResponse.data;
+      // let data = await apiResponse.data;
+      let data: ISubmissionsResponse = await apiResponse.data;
 
       if (filtersParam && apiResponse.status === 200) {
         const filters = JSON.parse(filtersParam as string); // note: yes we do need to parse filter params
