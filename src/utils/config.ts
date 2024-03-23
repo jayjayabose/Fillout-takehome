@@ -9,7 +9,7 @@ let apiUrlAndPath: string;
 if (BASE_URL && RESOURCE_PATH) {
   apiUrlAndPath = BASE_URL + RESOURCE_PATH;
 } else {
-  logger.error('One or envioronment variables are null. Check your .env file.');
+  logger.error('One or environment variables are null. Check your .env file.');
 }
 
 export { apiUrlAndPath, API_KEY };
