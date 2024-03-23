@@ -1,6 +1,6 @@
 # Project: Software Engineering Assignment
 - [Requirements](https://fillout.notion.site/Software-engineering-assignment-fbd58fd78f59495c99866b91b1358221)
-- v 1.0.2
+- v 1.0.3
 
 # Installation:
 ## Download the project
