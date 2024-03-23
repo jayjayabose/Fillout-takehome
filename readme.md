@@ -1,10 +1,11 @@
 # Project: Software Engineering Assignment
 - [Requirements](https://fillout.notion.site/Software-engineering-assignment-fbd58fd78f59495c99866b91b1358221)
+- v 1.0.2
 
 # Installation:
 ## Download the project
 - Clone the repo: `git clone https://github.com/jayjayabose/Fillout-takehome.git`
-- Intall and buld: `npm install && npm run build`
+- Install and build: `npm install && npm run build`
 
 ## Create your .env file
 - Create `.env` file in your project directory
