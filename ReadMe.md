@@ -19,7 +19,6 @@ RESOURCE_PATH=/v1/api/forms
 ## Start the server
 - `npm serve` will start the server
 
-
 # Implementation Notes
 ## Notes on filter
 - `value` property of questions may be `null`. There is no special logic for this case. No condition will match.
@@ -49,3 +48,8 @@ The way I read the requirements is as follows:
     - In order for `/filteredResponses` to calculate `totalResponse` it needs from `/responses`, two things:
       1. All responses for a form. To satisfy this requirement I assume no more than 150 results exist
       2. "unlimited" results. to satisfy this, `/filteredResponses` drops the `limit` parameter before relaying the request to `/response`. It then applies limit to the result that it returns.
+
+# Future work
+## Testing
+- Add integration tests
+  - I have unit tests for filter functions and performed manual end to end tests.      
