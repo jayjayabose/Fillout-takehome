@@ -2,43 +2,57 @@ import express from 'express';
 import { Request, Response } from 'express';
 import axios from 'axios';
 import logger from '../utils/logger';
-import {getFilteredData, getTotalResponsesAndPageCount, getLimitedData} from '../services/filters';
+import {
+  getFilteredData,
+  getTotalResponsesAndPageCount,
+  getLimitedData,
+} from '../services/filters';
 import { apiUrlAndPath, API_KEY } from '../utils/config';
-import { ISubmissionsResponse } from '../types/types';
+import {
+  SubmissionsResponseInterface,
+  ResponseFiltersType,
+} from '../types/types';
 
 const apiRouter = express.Router();
+
+function formatFilteredResponse(
+  data: SubmissionsResponseInterface,
+  filters: ResponseFiltersType,
+  requestedLimit: number | null
+): SubmissionsResponseInterface {
+  data = getFilteredData(data, filters);
+  data = getTotalResponsesAndPageCount(data, requestedLimit);
+  data = getLimitedData(data, requestedLimit);
+  return data;
+}
 
 apiRouter.get(
   '/forms/:formId/filteredResponses',
   async (req: Request, res: Response) => {
     try {
+      const apiSubmissionsEndPoint = `${apiUrlAndPath}/${req.params.formId}/submissions`;
       const filtersParam = req.query.filters;
       const requestedLimit = Number(req.query.limit) || null;
+      const paramsToRelay = { ...req.query };
 
-      // if filters are present, remove limit query param to get all responses
+      // if filters are present, remove limit query param to get all responses from '/submissions' endpoint
       if (filtersParam) {
-        delete req.query.limit;
+        delete paramsToRelay.limit;
       }
 
-      const apiSubmissionsEndPoint = `${apiUrlAndPath}/${req.params.formId}/submissions`;
-      
       const apiResponse = await axios.get(apiSubmissionsEndPoint, {
         headers: { Authorization: `Bearer ${API_KEY}` },
-        params: req.query,
+        params: paramsToRelay,
         validateStatus: function (status) {
-          // relay api apiResponse witn any status code
-          return true;
+          return true; // relay api apiResponse regarless of status code
         },
       });
 
-      // let data = await apiResponse.data;
-      let data: ISubmissionsResponse = await apiResponse.data;
+      let data: SubmissionsResponseInterface = await apiResponse.data;
 
       if (filtersParam && apiResponse.status === 200) {
-        const filters = JSON.parse(filtersParam as string); // note: yes we do need to parse filter params
-        data = getFilteredData(data, filters);
-        data = getTotalResponsesAndPageCount(data, requestedLimit);
-        data = getLimitedData(data, requestedLimit);
+        const filters = JSON.parse(filtersParam as string);
+        data = formatFilteredResponse(data, filters, requestedLimit);
       }
       res.status(apiResponse.status).send(data);
     } catch (error) {
@@ -63,4 +77,3 @@ apiRouter.all('*', (req, res) => {
 });
 
 export default apiRouter;
-

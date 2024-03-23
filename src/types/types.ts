@@ -6,46 +6,90 @@ type FilterClauseType = {
   value: number | string;
 };
 
-interface ISubmissionsResponse {
-  responses: IResponse[];
+interface SubmissionsResponseInterface {
+  responses: ResponseInterface[];
   totalResponses: number;
   pageCount: number;
 }
 
-interface IResponse {
+interface ResponseInterface {
   submissionId: string;
   submissionTime: string;
   lastUpdatedAt: string;
-  questions: IQuestion[] | [];
-  calculations: ICalculation[] | []; 
-  urlParameters: IUrlParameters[] | []; 
-  quiz?: {
-		score: number,
-		maxScore: number
-	} | {};
-  documents: any[] | []; // any for now, did not find description: https://www.fillout.com/help/fillout-rest-api#51324dd9c31c46a39068d0be81ab54d4
+  questions: QuestionInterface[] | [];
+  calculations: CalculationInterface[] | [];
+  urlParameters: UrlParametersInterface[] | [];
+  quiz?:
+    | {
+        score: number;
+        maxScore: number;
+      }
+    | {};
+  documents: any[] | []; // any for now, did not find type description: https://www.fillout.com/help/fillout-rest-api#51324dd9c31c46a39068d0be81ab54d4
 }
 
-interface IQuestion {
+interface QuestionInterface {
   id: string;
   name: string;
-  type: QuestionType;
+  type: QuestionTypeType;
   value?: string | number | null;
 }
-const questionTypes = ['Address', 'AudioRecording', 'Calcom', 'Calendly', 'Captcha', 'Checkbox', 'Checkboxes', 'ColorPicker', 'CurrencyInput', 'DatePicker', 'DateRange', 'DateTimePicker', 'Dropdown', 'EmailInput', 'FileUpload', 'ImagePicker', 'LocationCoordinates', 'LongAnswer', 'Matrix', 'MultiSelect', 'MultipleChoice', 'NumberInput', 'OpinionScale', 'Password', 'Payment', 'PhoneNumber', 'Ranking', 'RecordPicker', 'ShortAnswer', 'Signature', 'Slider', 'StarRating', 'Switch', 'TimePicker', 'URLInput'] as const;
-type QuestionType = typeof questionTypes[number];
+const questionTypes = [
+  'Address',
+  'AudioRecording',
+  'Calcom',
+  'Calendly',
+  'Captcha',
+  'Checkbox',
+  'Checkboxes',
+  'ColorPicker',
+  'CurrencyInput',
+  'DatePicker',
+  'DateRange',
+  'DateTimePicker',
+  'Dropdown',
+  'EmailInput',
+  'FileUpload',
+  'ImagePicker',
+  'LocationCoordinates',
+  'LongAnswer',
+  'Matrix',
+  'MultiSelect',
+  'MultipleChoice',
+  'NumberInput',
+  'OpinionScale',
+  'Password',
+  'Payment',
+  'PhoneNumber',
+  'Ranking',
+  'RecordPicker',
+  'ShortAnswer',
+  'Signature',
+  'Slider',
+  'StarRating',
+  'Switch',
+  'TimePicker',
+  'URLInput',
+] as const;
+type QuestionTypeType = (typeof questionTypes)[number];
 
-interface ICalculation {
+interface CalculationInterface {
   id: string;
   name: string;
   type: 'number' | 'text';
-	value?: string;
+  value?: string;
 }
 
-interface IUrlParameters {
+interface UrlParametersInterface {
   id: string;
   name: string;
-	value?: string;
+  value?: string;
 }
 
-export {ISubmissionsResponse, IResponse, IQuestion, ResponseFiltersType, FilterClauseType}
+export {
+  SubmissionsResponseInterface,
+  ResponseInterface,
+  QuestionInterface,
+  ResponseFiltersType,
+  FilterClauseType,
+};
